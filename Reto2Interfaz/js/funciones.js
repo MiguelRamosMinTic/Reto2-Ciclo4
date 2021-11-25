@@ -50,7 +50,7 @@ $("#guardar").click(function(){
                 statusCode: {
                     201: function(response){
                         console.log(response);
-                        alert("Registrado Correctamente c: ");
+                        alert("Registrado Correctamente :O ");
                     }
                 }
             });
