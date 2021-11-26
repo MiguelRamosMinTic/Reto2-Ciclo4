@@ -55,7 +55,7 @@ $("#guardar").click(function(){
                 }
             });
         }else{
-            alert("Las contraseñas no coinciden");
+            alert("Las contraseñas no coinciden :c");
         }
     }
 });
