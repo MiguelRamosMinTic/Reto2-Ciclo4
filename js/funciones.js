@@ -22,6 +22,11 @@ function validarUsuario(response) {
     if(response.id != null){
         location.href = "bienvenida.html";
         alert("¡Bienvenido! "+ response.name);
+
+        var bienvenida = document.getElementById("#bienvenido");
+        var texto = document.createElement("P");
+        texto.append("Hola");
+        bienvenida.append(texto);
     }else{
         alert("Usuario no registrado");
     }
