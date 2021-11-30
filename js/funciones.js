@@ -70,7 +70,7 @@ function validarEmail(){
         email: $("#emailRegistro").val()
     }
     $.ajax({
-        url:"http://localhost:8080/api/user/"+datos.email,
+        url:"http://localhost:8080/api/user/emailexist/"+datos.email,
         method:"GET",
         dataType:"json",
         success:function(response){
