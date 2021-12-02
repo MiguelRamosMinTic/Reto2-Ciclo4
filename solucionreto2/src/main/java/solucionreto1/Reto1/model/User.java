@@ -1,10 +1,10 @@
 package solucionreto1.Reto1.model;
 
-import java.util.Date;
 import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 /**
@@ -29,5 +29,6 @@ public class User{
     private String password;
     private String zone;
     private String type;
+    
 
 }

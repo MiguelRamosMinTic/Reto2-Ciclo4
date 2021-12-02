@@ -25,29 +25,6 @@ public class CloneService {
         return repository.getCloneById(id);
     }
     
-
-    /*
-    // < CREATE - NEW PRODUCT >
-    public Product saveProduct(Product product) {
-        if (product.getBrand() == null || product.getProcesor() == null ||
-        product.getOs() == null || product.getDescription() == null ||
-        product.getMemory() == null || product.getHardDrive() == null || 
-        product.getPhotography() == null) {
-            return product;
-            
-        } else {
-            Optional<Product> productExists = metodosCrud.getProductById(product.getId());
-            if (productExists.isEmpty()) {
-                return metodosCrud.saveProduct(product);
-                
-            } else {
-                return product;
-                
-            }
-        }
-        
-    }
-    */
     
     public Clone save(Clone c) {
         if(c.getBrand() == null || c.getProcesor() == null ||

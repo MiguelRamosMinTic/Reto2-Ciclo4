@@ -40,4 +40,5 @@ public interface UserCrudRepository extends MongoRepository<User, Integer> {
      * @return 
      */
     public Optional<User> findByEmailAndPassword(String email, String password);
+
 }

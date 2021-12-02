@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.List;
+import java.util.Optional;
 import solucionreto1.Reto1.model.User;
 import solucionreto1.Reto1.service.UserService;
 
@@ -30,6 +31,11 @@ public class UserController {
     @GetMapping("/all")
     public List<User> getUsers(){
         return service.getAll();
+    }
+    
+    @GetMapping("/{id}")
+    public Optional<User> getUser(@PathVariable("id") Integer id) {
+        return service.getUser(id);
     }
 
     /**
