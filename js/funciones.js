@@ -20,7 +20,7 @@ $("#login").click(function(){
 
 function validarUsuario(response) {
     if(response.id != null){
-        location.href = "bienvenida.html";
+        location.href = "usuarios.html";
         alert("¡Bienvenido! "+ response.name);
 
         var bienvenida = document.getElementById("#bienvenido");

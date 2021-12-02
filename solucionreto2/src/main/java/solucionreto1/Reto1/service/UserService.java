@@ -29,7 +29,7 @@ public class UserService {
     }
 
     public User save(User u){
-        if(u.getName()== null || u.getEmail()== null || u.getPassword() == null || u.getIdentification() == null || u.getType() == null){
+        if(u.getName()== null || u.getEmail()== null || u.getPassword() == null ){
             return u;
         }else{
             List<User> existUser = repository.getUsersByNameOrEmail(u.getName(), u.getEmail());
