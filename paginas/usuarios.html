@@ -59,11 +59,11 @@
         class="rounded mx-auto d-block" />
         <h1>Registrar Usuarios</h1>
       <button type="submit" class="btn fa fa-plus"  style="margin-top: 30px ; width: 150px; height: 50px; background: rgba(157, 160, 177, 0.418);" data-bs-toggle="modal"
-        data-bs-target="#ventanaRegistar" id="registrarUsuario"> Registrar</button>        
+        data-bs-target="#ventanaRegistrar" id="registrarUsuario" > Registrar</button>        
     </center>
   </div>
 
-  <div class="modal fade" id="ventanaRegistar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="ventanaRegistrar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header card text-center" > 
@@ -72,9 +72,10 @@
         </div>
         <div class="modal-body">
             <form>
+              
                 <div class="row">
                   <div class="col">
-                    <input type="text" class="form-control" id ="identificacionRegistro" placeholder="identificación">
+                    <input type="number" class="form-control" id ="identificacionRegistro" placeholder="identificación">
                   </div>
                   <div class="col">
                     <input type="text" class="form-control" id="nombreRegistro" placeholder="nombre" required>
@@ -110,8 +111,10 @@
               </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-          <button type="button" class="btn btn-primary" id="guardarUsuario">Guardar</button>
+           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button> 
+           <button type="button" class="btn btn-primary" id="guardarUsuario">Guardar</button> 
+           <button type="button" class="btn btn-primary" id="editarUsuario">Editar</button> 
+          
         </div>
       </div>
     </div>
@@ -133,19 +136,10 @@
         <th scope="col">Options</th>
       </tr>
     </thead>
-    <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-        <td>4564785</td>
-        <td>ottogmail.com</td>
-        <td>ottomark13</td>
-        <td>miami</td>
-        <td>coordinador de zona</td>
-        <td > <button class="btn btn-primary fa fa-pencil "></button> <button class="btn btn-danger fa fa-remove"></button></td>
-      </tr>
+    <tbody id="miTabla">
+      
+      
+      
       
     </tbody>
   </table>
