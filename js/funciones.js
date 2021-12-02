@@ -1,22 +1,66 @@
 // USER ==============================================================================================
 
+
+const URL_BASE = "http://localhost:8080/api/";
+
+
+
+function URL_GET_USERS() {
+    return URL_BASE + "user/all";
+}
+
+function URL_POST() {
+    return URL_BASE + "user/new";
+}
+
+function URL_GET_EMAIL(email) {
+    return URL_BASE + "user/emailexist/" + email;
+}
+
+function URL_GET_USER(email, password) {
+    return URL_BASE + "user/" + email + "/" + password;
+}
+
+function URL_GET_ID(id) {
+    return URL_BASE + "user/" + id;
+}
+
+function getInputsLogin() {
+    return {
+        email: $("#email").val(),
+        contrasena: $("#contrasena").val()
+    };
+}
+
+function jqueryGET(url, funcion) {
+    $.ajax({
+        url: url,
+        method: "GET",
+        dataType: "json",
+        success: function (response) {
+            funcion(response);
+        }
+    });
+}
+
+let checkUser = function(rta) {
+    if (rta.id == null) {
+        alert("Email y/o password inválidos");
+
+    } else {
+        alert("¡Bienvenido! "+rta.name);
+        window.location.href = "usuarios.html";
+    }
+}
+
 $("#login").click(function () {
     if ($.trim($("#email").val()) == "" || $.trim($("#contrasena").val()) == "") {
         alert("Por favor ingrese el correo y la contraseña");
     } else {
-        let datos = {
-            email: $("#email").val(),
-            contrasena: $("#contrasena").val()
-        }
-        $.ajax({
-            url: "http://localhost:8080/api/user/" + datos.email + "/" + datos.contrasena,
-            method: "GET",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-                validarUsuario(response)
-            }
-        });
+        let datos = getInputsLogin();
+        
+        jqueryGET(URL_GET_USER(datos.email, datos.contrasena), checkUser);
+        
     }
 });
 
@@ -34,35 +78,10 @@ $("#guardar").click(function () {
     if ($.trim($("#emailRegistro").val()) == "" || $.trim($("#usuarioRegistro").val()) == "" || $.trim($("#contrasenaRegistro").val()) == "" || $.trim($("#contrasenaRegistro2").val()) == "") {
         alert("Por favor ingrese todos los campos");
     } else {
-        if ($("#contrasenaRegistro").val() == $("#contrasenaRegistro2").val()) {
-            let datos = {
-                id: $('#id').val(),
-                identification: $('#id').val(),
-                name: $("#usuarioRegistro").val(),
-                address: "",
-                cellPhone: "",
-                email: $("#emailRegistro").val(),
-                password: $("#contrasenaRegistro").val(),
-                zone: "",
-                type: ""
-            }
-            datos = JSON.stringify(datos);
-            $.ajax({
-                url: "http://localhost:8080/api/user/new",
-                method: "POST",
-                dataType: "JSON",
-                data: datos,
-                contentType: "application/json",
-                success: function (response) {
-                    console.log(response);
-                },
-                statusCode: {
-                    201: function (response) {
-                        console.log(response);
-                        alert("Registrado Correctamente");
-                    }
-                }
-            });
+         if ($("#contrasenaRegistro").val() == $("#contrasenaRegistro2").val()) {
+            let datos = jsonDatos();
+            let url = "http://localhost:8080/api/user/emailexist/"+datos.email;
+            getFuncion(url, emailExiste);
         } else {
             alert("Las contraseñas no coinciden :c");
             $("#contrasenaRegistro").val("");
@@ -71,57 +90,164 @@ $("#guardar").click(function () {
     }
 });
 
+function getFuncion(url, funcion){
+    $.ajax({
+        url: url,
+        method: "GET",
+        dataType: "json",
+        success: function (response) {
+            funcion(response);
+        }
+    });
+}
+
+function postFuncion(url, funcion){
+    $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "JSON",
+        data: JSON.stringify(jsonDatos()),
+        contentType: "application/json",
+        success: function (response) {
+            console.log(response);
+            registroUsuario();
+        }
+    });
+}
+
+let registroUsuario = function(){
+    alert("Registrado correctamente");
+}
+
+let emailExiste = function(response){
+    if(response){
+        alert("El Email ya existe");
+    }else{
+        let url = "http://localhost:8080/api/user/new";
+        postFuncion(url, registroUsuario);
+    }
+}
+
+function jsonDatos(){
+    return {
+        id: $('#id').val(),
+        identification: $('#id').val(),
+        name: $("#usuarioRegistro").val(),
+        address: "",
+        cellPhone: "",
+        email: $("#emailRegistro").val(),
+        password: $("#contrasenaRegistro").val(),
+        zone: "",
+        type: ""
+    }
+}
+
 
 function validarEmail() {
-    let datos = {
-        email: $("#emailRegistro").val()
-    }
+    let email = $("#emailRegistro").val();
     $.ajax({
-        url: "http://localhost:8080/api/user/emailexist/" + datos.email,
+        url: "http://localhost:8080/api/user/emailexist/" + email,
         method: "GET",
         dataType: "json",
         success: function (response) {
             console.log(response);
+            if(response){
+                alert("Email ya existe");
+            }
         }
     });
+}
+
+function postFuncionUsuario(url, funcion){
+    $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "JSON",
+        data: JSON.stringify(jsonDatosUsuario()),
+        contentType: "application/json",
+        success: function (response) {
+            console.log(response);
+            registroUsuario();
+        }
+    });
+}
+
+function getJSONnew (){
+    return {
+        id: $("#identificacionRegistro").val(),
+        identification: $("#identificacionRegistro").val(),
+        name: $("#nombreRegistro").val(),
+        address: $("#addressRegistro").val(),
+        cellPhone: $("#cellphoneRegistro").val(),
+        email: $("#emailRegistro").val(),
+        password: $("#passwordRegistro").val(),
+        zone: $("#zoneRegistro").val(),
+        type: $("#typeRegistro").val()
+    }
 }
 
 $("#guardarUsuario").click(function () {
     if ($.trim($("#identificacionRegistro").val()) == "" || $.trim($("#nombreRegistro").val()) == "" || $.trim($("#addressRegistro").val()) == "" || $.trim($("#cellphoneRegistro").val()) == "" || $.trim($("#emailRegistro").val()) == "" || $.trim($("#passwordRegistro").val()) == "" || $.trim($("#zoneRegistro").val()) == "" || $.trim($("#typeRegistro").val()) == "") {
         alert("Por favor ingrese todos los campos");
-    } else {
-        let datos = {
-            id: $("#identificacionRegistro").val(),
-            identification: $("#identificacionRegistro").val(),
-            name: $("#nombreRegistro").val(),
-            address: $("#addressRegistro").val(),
-            cellPhone: $("#cellphoneRegistro").val(),
-            email: $("#emailRegistro").val(),
-            password: $("#passwordRegistro").val(),
-            zone: $("#zoneRegistro").val(),
-            type: $("#typeRegistro").val()
-        }
-        $.ajax({
-            url: "http://localhost:8080/api/user/new",
-            method: "POST",
-            dataType: "JSON",
-            data: JSON.stringify(datos),
-            contentType: "application/json",
-            Headers: {
-                "Content-Type": "application/json"
-            },
-            statusCode: {
-                201: function (response) {
-                    console.log(response);
-                    alert("Registrado Correctamente");
-                    $("#miTabla").empty();
-                    consultarUsuario();
-                    $('#ventanaRegistrar').modal('hide');
-                }
-            }
-        });
+    }else {
+        let url = URL_GET_EMAIL(getEmailNew());
+        jqueryGET(url, verifyEmail);
     }
 });
+
+function jqueryPOST(url, funcion, json) {
+    $.ajax({
+        url: url,
+        method: "POST",
+        dataType: "JSON",
+        data: JSON.stringify(json),
+        contentType: "application/json",
+        
+        success: function (response) {
+            //console.log(response);
+            funcion();
+        }
+    });
+}
+
+let usuarioAgregado = function() {
+    alert("Se ha registrado el nuevo usuario");
+    //mostrarTabla();
+    $('#ventanaRegistrar').modal('hide');
+    jqueryGET(URL_GET_USERS(), mostrarTabla);
+
+}
+
+let verifyEmail = function(rta) {
+    if(rta) {
+        alert("El email ingresado ya existe");
+    } else {
+        let json = getJSONnew();
+        jqueryPOST(URL_POST(), usuarioAgregado, json);
+
+    }
+
+}
+
+
+let verifyID = function(rta) {
+    if (rta.id != null) {
+        alert("El id ingresado ya existe");
+
+    } else {
+        let url = URL_GET_EMAIL(getEmailNew());
+        jqueryGET(url, verifyEmail);
+
+    }
+} 
+
+function getIdNew() {
+    return $("#identificacionRegistro").val();
+}
+
+function getEmailNew() {
+    return $("#emailRegistro").val();
+}
 
 function consultarUsuario() {
     $.ajax({
@@ -136,9 +262,19 @@ function consultarUsuario() {
     });
 }
 
-function mostrarTabla(response) {
+
+
+let mostrarTabla = function(response) {
+    $("#miTabla").empty();
     let rows = '<tr>';
     for (i = 0; i < response.length; i++) {
+
+        let jsonDEL = {
+            id: response[i].id
+        };
+
+        let URL_DEL = URL_GET_ID(response[i].id);
+
         rows += '<th scope="row">' + response[i].id + '</th>';
         rows += '<td>' + response[i].identification + '</td>';
         rows += '<td>' + response[i].name + '</td>';
@@ -148,7 +284,7 @@ function mostrarTabla(response) {
         rows += '<td>' + response[i].password + '</td>';
         rows += '<td>' + response[i].zone + '</td>';
         rows += '<td>' + response[i].type + '</td>';
-        rows += '<td> <button class="btn btn-primary fa fa-pencil" onclick="buscarPorIDUsuario(' + response[i].id + ')"></button><button style="margin-left:10px"class="btn btn-danger fa fa-remove" onclick="eliminarUsuario(' + response[i].id + ')"></button></td>';
+        rows += "<td> <button class='btn btn-primary fa fa-pencil' onclick='buscarPorIDUsuario(" + response[i].id + ")'></button><button style='margin-left:10px' class='btn btn-danger fa fa-remove' onclick='jqueryDEL(" + response[i].id + ")'></button></td>";
         rows += '</tr>';
     }
 
@@ -204,6 +340,30 @@ function buscarPorIDUsuario(idItem) {
         }
     });
 }
+
+let usuarioEliminado = function() {
+    alert("Se ha eliminado el usuario");
+    jqueryGET(URL_GET_USERS(), mostrarTabla);
+
+}
+
+function jqueryDEL(id) {
+    let json = {
+        id: id
+    };
+    $.ajax({
+        url: URL_GET_ID(id),
+        type: "DELETE",
+        data: JSON.stringify(json),
+        datatype: "json",
+        contentType: 'application/json',
+        success: function (respuesta) {
+            usuarioEliminado();
+        }
+    });
+
+}
+
 
 function eliminarUsuario(idElemento) {
     let elemento = {
@@ -378,5 +538,5 @@ function eliminarInventario(idElemento) {
   }
 
 
-window.onload = consultarUsuario();
+window.onload = jqueryGET(URL_GET_USERS() , mostrarTabla);
 window.onload = consultarInventario();
