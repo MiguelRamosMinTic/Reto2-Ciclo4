@@ -407,7 +407,7 @@ $("#guardarInventario").click(function () {
             photography: $("#photographyRegistro").val()
         }
         $.ajax({
-            url: "http://localhost:8080/api/clone/new",
+            url: "http://localhost:8080/api/peripheral/new",
             method: "POST",
             dataType: "JSON",
             data: JSON.stringify(datos),
@@ -430,7 +430,7 @@ $("#guardarInventario").click(function () {
 
 function consultarInventario() {
     $.ajax({
-        url: "http://localhost:8080/api/clone/all",
+        url: "http://localhost:8080/api/peripheral/all",
         type: "GET",
         datatype: "JSON",
         success: function (response) {
@@ -482,7 +482,7 @@ $("#editarInventario").click(function() {
         dataType: 'json',
         data: dataToSend,
         contentType: 'application/json',
-        url: "http://localhost:8080/api/clone/update",
+        url: "http://localhost:8080/api/peripheral/update",
         type: 'PUT',
         success: function (response) {
             console.log(response);
@@ -496,7 +496,7 @@ $("#editarInventario").click(function() {
 
 function buscarPorIDInventario(idItem) {
     $.ajax({
-        url: "http://localhost:8080/api/clone/" + idItem,
+        url: "http://localhost:8080/api/peripheral/" + idItem,
         type: "GET",
         datatype: "JSON",
         success: function (response) {
@@ -524,7 +524,7 @@ function eliminarInventario(idElemento) {
     let datoEnvio = JSON.stringify(elemento);
     console.log(datoEnvio);
     $.ajax({
-      url: "http://localhost:8080/api/clone/" + idElemento,
+      url: "http://localhost:8080/api/peripheral/" + idElemento,
       type: "DELETE",
       data: datoEnvio,
       datatype: "json",
@@ -540,3 +540,8 @@ function eliminarInventario(idElemento) {
 
 window.onload = jqueryGET(URL_GET_USERS() , mostrarTabla);
 window.onload = consultarInventario();
+
+// $("document").ready(function(){
+//     var idUser = localStorage.getItem('idUser');
+//     console.log(isUser);
+// })
